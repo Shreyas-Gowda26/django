@@ -1,0 +1,27 @@
+{% extends "books/base.html" %}
+
+{% block content %}
+
+<h1>Add a New Book</h1>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="title" placeholder="Title">
+
+    <input type="text" name="author" placeholder="Author">
+
+    <input type="number" name="pages" placeholder="Pages">
+
+    <textarea
+        name="description"
+        placeholder="Description">
+    </textarea>
+
+    <button type="submit">
+        Add Book
+    </button>
+
+</form>
+
+{% endblock %}
