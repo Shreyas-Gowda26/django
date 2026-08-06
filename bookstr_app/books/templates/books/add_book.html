@@ -2,25 +2,24 @@
 
 {% block content %}
 
-<h1>Add a New Book</h1>
+<h1>Add Book</h1>
 
 <form method="POST">
     {% csrf_token %}
 
     <input type="text" name="title" placeholder="Title">
+    <br><br>
 
     <input type="text" name="author" placeholder="Author">
+    <br><br>
 
     <input type="number" name="pages" placeholder="Pages">
+    <br><br>
 
-    <textarea
-        name="description"
-        placeholder="Description">
-    </textarea>
+    <textarea name="description" placeholder="Description"></textarea>
+    <br><br>
 
-    <button type="submit">
-        Add Book
-    </button>
+    <button type="submit">Add Book</button>
 
 </form>
 
