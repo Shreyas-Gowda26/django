@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from .models import Book
 # Create your views here.
 def home(request):
@@ -16,9 +16,6 @@ def book_detail(request, book_id):
     }
     return render(request, 'books/detail.html', context)
 
-from django.shortcuts import render, redirect
-from .models import Book
-
 def add_book(request):
     if request.method == "POST":
 
@@ -27,7 +24,46 @@ def add_book(request):
         pages = request.POST["pages"]
         description = request.POST["description"]
 
-        print(title)
-        print(author)
-
+        Book.objects.create(
+        title=title,
+        author=author,
+        pages=pages,
+        description=description,
+    )
+        return redirect("home")
     return render(request, "books/add_book.html")
+
+def edit_book(request, book_id):
+
+    book = get_object_or_404(Book, id=book_id)
+
+    if request.method == "POST":
+
+        book.title = request.POST["title"]
+        book.author = request.POST["author"]
+        book.pages = request.POST["pages"]
+        book.description = request.POST["description"]
+
+        book.save()
+
+        return redirect("book_detail", book_id=book.id)
+
+    context = {
+        "book": book
+    }
+
+    return render(request, "books/edit_book.html", context)
+
+def delete_book(request, book_id):
+
+    book = get_object_or_404(Book, id=book_id)
+
+    if request.method == "POST":
+        book.delete()
+        return redirect("home")
+
+    return render(
+        request,
+        "books/delete_book.html",
+        {"book": book}
+    )
