@@ -7,17 +7,7 @@
 <form method="POST">
     {% csrf_token %}
 
-    <input type="text" name="title" placeholder="Title">
-    <br><br>
-
-    <input type="text" name="author" placeholder="Author">
-    <br><br>
-
-    <input type="number" name="pages" placeholder="Pages">
-    <br><br>
-
-    <textarea name="description" placeholder="Description"></textarea>
-    <br><br>
+    {{ form.as_p }}
 
     <button type="submit">Add Book</button>
 

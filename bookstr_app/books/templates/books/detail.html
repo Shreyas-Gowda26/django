@@ -9,5 +9,6 @@
 <p>{{ book.description }}</p>
 
 <a href="{% url 'home' %}">← Back to Home</a>
-
+<a href="{% url 'edit_book' book.id %}">Edit</a>
+<a href="{% url 'delete_book' book.id %}">Delete</a>
 {% endblock %}
