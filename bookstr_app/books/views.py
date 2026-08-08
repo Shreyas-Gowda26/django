@@ -1,5 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from .models import Book
+from .forms import BookForm
 # Create your views here.
 def home(request):
     books = Book.objects.all()
@@ -17,53 +18,43 @@ def book_detail(request, book_id):
     return render(request, 'books/detail.html', context)
 
 def add_book(request):
+
     if request.method == "POST":
+        form = BookForm(request.POST)
 
-        title = request.POST["title"]
-        author = request.POST["author"]
-        pages = request.POST["pages"]
-        description = request.POST["description"]
+        if form.is_valid():
+            form.save()
+            return redirect("home")
 
-        Book.objects.create(
-        title=title,
-        author=author,
-        pages=pages,
-        description=description,
+    else:
+        form = BookForm()
+
+    return render(
+        request,
+        "books/add_book.html",
+        {"form": form}
     )
-        return redirect("home")
-    return render(request, "books/add_book.html")
 
 def edit_book(request, book_id):
-
     book = get_object_or_404(Book, id=book_id)
 
     if request.method == "POST":
+        form = BookForm(request.POST, instance=book)
 
-        book.title = request.POST["title"]
-        book.author = request.POST["author"]
-        book.pages = request.POST["pages"]
-        book.description = request.POST["description"]
+        if form.is_valid():
+            form.save()
+            return redirect("book_detail", book_id=book.id)
 
-        book.save()
+    else:
+        form = BookForm(instance=book)
 
-        return redirect("book_detail", book_id=book.id)
-
-    context = {
-        "book": book
-    }
-
-    return render(request, "books/edit_book.html", context)
+    return render(request, "books/edit_book.html", {"form": form})
 
 def delete_book(request, book_id):
-
     book = get_object_or_404(Book, id=book_id)
 
     if request.method == "POST":
         book.delete()
         return redirect("home")
 
-    return render(
-        request,
-        "books/delete_book.html",
-        {"book": book}
-    )
+    return render(request, "books/delete_book.html", {"book": book})
