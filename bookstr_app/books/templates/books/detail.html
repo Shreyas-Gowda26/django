@@ -9,6 +9,9 @@
 <p>{{ book.description }}</p>
 
 <a href="{% url 'home' %}">← Back to Home</a>
-<a href="{% url 'edit_book' book.id %}">Edit</a>
-<a href="{% url 'delete_book' book.id %}">Delete</a>
+{% if request.user.is_authenticated %}
+    <a href="{% url 'add_book' %}">Add Book</a>
+    <a href="{% url 'edit_book' book.id %}">Edit</a>
+    <a href="{% url 'delete_book' book.id %}">Delete</a>
+{% endif %}
 {% endblock %}
