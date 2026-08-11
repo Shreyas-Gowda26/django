@@ -136,3 +136,8 @@ class BookViewSet(ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated, IsOwner]
+
+    filterset_fields = ['author']
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
