@@ -132,12 +132,34 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from .permissions import IsOwner
 
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter,OrderingFilter
+
+
 class BookViewSet(ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated, IsOwner]
 
+    filter_backends = [
+        DjangoFilterBackend,
+        SearchFilter,
+        OrderingFilter,
+    ]
+
     filterset_fields = ['author']
+
+    search_fields = [
+        'title',
+        'description',
+        'author',
+    ]
+
+    ordering_fields = [
+        'title',
+        'pages',
+        'author',
+    ]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
